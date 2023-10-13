@@ -1,36 +1,55 @@
 #include "enrutador.h"
 
-Enrutador::Enrutador()
-{
+Enrutador::Enrutador(){}
 
+void Enrutador::add_nombre(string nombre)
+{
+    this->nombre = nombre;
 }
 
-bool Enrutador::edit_caracteristic(string car, string data)
+void Enrutador::add_enlace(string enlace, int costo)
 {
-    bool is_correct = false;
-    if(this->tabla_enrutador.find(car)!=this->tabla_enrutador.end()){
-        this->tabla_enrutador[car] = data;
-        is_correct = true;
+    if(this->tabla_enlaces.find(enlace)==this->tabla_enlaces.end()){
+        this->tabla_enlaces.insert(pair<string,int>(enlace,costo));
     }
-    return is_correct;
 }
 
-bool Enrutador::add_caracteristic(string car)
+void Enrutador::edit_costo(string enlace, int costo)
 {
-    bool is_correct = false;
-    if(this->tabla_enrutador.find(car)==this->tabla_enrutador.end()){
-        this->tabla_enrutador.insert(pair<string,string>(car,""));
-        is_correct = true;
+    if(this->tabla_enlaces.find(enlace)!=this->tabla_enlaces.end()){
+        this->tabla_enlaces[enlace] = costo;
     }
-    return is_correct;
 }
 
-bool Enrutador::delete_caracteristic(string car)
+void Enrutador::delete_enlace(string enlace)
 {
-    bool is_correct = false;
-    if(this->tabla_enrutador.find(car)!=this->tabla_enrutador.end()){
-        this->tabla_enrutador.erase(car);
-        is_correct = true;
+    if(this->tabla_enlaces.find(enlace)!=this->tabla_enlaces.end()){
+        this->tabla_enlaces.erase(enlace);
     }
-    return is_correct;
 }
+
+void Enrutador::print_tabla_enlaces()
+{
+    for(map<string, int>::iterator it = tabla_enlaces.begin(); it != tabla_enlaces.end(); it++){
+        cout <<endl << nombre << "\t" << it->first << "\t" << it->second << endl;
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

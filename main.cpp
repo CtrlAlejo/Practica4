@@ -1,16 +1,25 @@
 #include <iostream>
 #include "enrutador.h"
+#include "red.h"
 
 using namespace std;
 
 int main()
 {
-    Enrutador a;
-    a.add_caracteristic("Nombre");
-    a.add_caracteristic("Enlace");
-    a.add_caracteristic("Costo");
-    a.edit_caracteristic("Nombre","A");
-    a.edit_caracteristic("Enlace","B");
-    a.edit_caracteristic("Costo","0");
+    /*
+    Enrutador A;
+    A.add_nombre("A");
+    A.add_enlace("B", 5);
+    A.add_enlace("C", 10);
+    A.print_tabla_enlaces();
+    cout << endl;
+    A.add_enlace("D", 7);
+    A.edit_costo("B", 2);
+    A.delete_enlace("C");
+    A.print_tabla_enlaces();
+    */
+
+
+
     return 0;
 }
