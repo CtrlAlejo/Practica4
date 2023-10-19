@@ -16,6 +16,9 @@ public:
     void edit_costo(string enlace, int costo);
     void delete_enlace(string enlace);
     void print_tabla_enlaces();
+    string getNombre() const;
+    map<string, int> getTabla_enlaces() const;
+    void setTabla_enlaces(const map<string, int> &newTabla_enlaces);
 };
 
 #endif // ENRUTADOR_H

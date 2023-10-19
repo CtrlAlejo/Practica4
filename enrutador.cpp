@@ -1,5 +1,20 @@
 #include "enrutador.h"
 
+string Enrutador::getNombre() const
+{
+    return nombre;
+}
+
+map<string, int> Enrutador::getTabla_enlaces() const
+{
+    return tabla_enlaces;
+}
+
+void Enrutador::setTabla_enlaces(const map<string, int> &newTabla_enlaces)
+{
+    tabla_enlaces = newTabla_enlaces;
+}
+
 Enrutador::Enrutador(){}
 
 void Enrutador::add_nombre(string nombre)
