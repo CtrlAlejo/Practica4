@@ -1,16 +1,56 @@
 #include "red.h"
 #include <fstream>
 
-bool verif_de_enrutadores(string enrutador, const vector<string> valores){
-    for (auto it = valores.begin(); it != valores.end(); it++){
-        if (enrutador != *it){
-            return true;
-        }
-        else {
-            return false;
-        }
+void numero_limpio(string &num_o)
+{
+    size_t caracter;
+    caracter = num_o.find('\r');
+    if (caracter != string::npos){
+        num_o.erase(caracter, 1);
     }
-    return false;
+}
+
+int conversion_de_char_a_int(const string cadena)
+{
+    //Recibe una cadena de caracteres numericos y la convierte a enteros
+    int numero = 0, i = 0, signo = 1;
+    if (cadena[0] == '-') {
+        signo = -1;
+        i = 1;
+    }
+    while(cadena[i] != '\0'){
+        if(cadena[i] >= '0' && cadena[i] <= '9'){
+            numero = numero * 10 + (cadena[i] - '0');
+        }
+        else{
+            break;
+        }
+        i++;
+    }
+    return numero * signo;
+}
+void Red::enrutadores_archivo(const vector<string>enrutadores, const vector<string>linea)
+{
+    Red malla; unsigned cont2 = 0; int cont = 0; string nombre; int numero, pos = 1;
+    while (cont++ < 2){
+        nombre = linea[cont];
+        for (auto it = enrutadores.begin(); it != enrutadores.end(); it++){
+            if (nombre == *it) cont2++;
+        }
+        if (cont2 == 1){
+            Enrutador enrutador(nombre);
+            numero = conversion_de_char_a_int(linea[2]);
+            enrutador.add_enlace(linea[pos], numero);
+            malla.add_enrutador(enrutador);
+        }
+        cont2 = 0;
+        pos--;
+    }
+}
+
+vector<Enrutador> Red::privado() const
+{
+    return enrutadores;
 }
 
 void Red::add_enrutador(Enrutador enr)
@@ -26,8 +66,10 @@ void Red::delete_enrutador(string enr)
     }
 }
 
-void Red::cargar_red_archivo(string file){
-    bool check; ifstream archivo; string linea, valor; vector<string> valores; size_t pos = 0, espacio = 0;// Abre el archivo
+void Red::cargar_red_archivo(string file)
+{
+    Red red; vector<Enrutador> prueba;
+    int cont = 0; ifstream archivo; string linea, valor; vector<string> valores; vector<string> aux; size_t pos = 0, espacio = 0;
     archivo.open(file, ios::in | ios::binary);
     if (archivo.is_open()){
         while (getline(archivo, linea)) { // Lee la primera línea
@@ -41,16 +83,22 @@ void Red::cargar_red_archivo(string file){
                     valor = linea.substr(pos);
                     pos = linea.length();
                 }
-                valores.push_back(valor);
+                cont++;
+                aux.push_back(valor);
+                if (cont < 3){
+                    valores.push_back(valor);
+                }
+                if (cont == 3){
+                    cont = 0;
+                }
             }
-            check = verif_de_enrutadores(valor, valores);
-            if (check == false){
-            }
+            enrutadores_archivo(valores, aux);
+            aux.clear();
+            pos = 0;
+
             // Ahora, los valores se almacenan en el vector 'valores'
-            cout << endl;
-        } if(!getline(archivo, linea)) {
-            cerr << "El archivo está vacío." << endl;
         }
+        prueba = red.privado();
         archivo.close();
     }
 }

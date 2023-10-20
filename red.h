@@ -3,7 +3,7 @@
 #include "enrutador.h"
 #include <vector>
 
-bool verif_de_enrutadores(string enrutador, const vector<string> valores);
+int conversion_de_char_a_int(const char *cadena);
 
 class Red {
 private:
@@ -12,8 +12,8 @@ public:
     void cargar_red_archivo(string file);
     void add_enrutador(Enrutador enr);
     void delete_enrutador(string enr);
-
-
+    void enrutadores_archivo(const vector<string>enrutadores, const vector<string>linea);
+    vector <Enrutador> privado() const;
 };
 
 

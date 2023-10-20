@@ -6,7 +6,8 @@ using namespace std;
 
 int main()
 {
-
+    Red red;
+    red.cargar_red_archivo("ejemplo.txt");
 /*
     Enrutador A;
     A.add_nombre("A");

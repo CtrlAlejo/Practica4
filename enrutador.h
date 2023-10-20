@@ -11,6 +11,7 @@ private:
     map <string,int> tabla_enlaces;
 public:
     Enrutador();
+    Enrutador(const string& nombre);
     void add_nombre(string nombre);
     void add_enlace(string enlace, int costo);
     void edit_costo(string enlace, int costo);
