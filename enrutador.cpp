@@ -2,8 +2,6 @@
 
 Enrutador::Enrutador(){}
 
-Enrutador::Enrutador(const string& nombre){}
-
 string Enrutador::getNombre() const
 {
     return nombre;

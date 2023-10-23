@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <vector>
 using namespace std;
 
 class Enrutador{
@@ -11,7 +12,6 @@ private:
     map <string,int> tabla_enlaces;
 public:
     Enrutador();
-    Enrutador(const string& nombre);
     void add_nombre(string nombre);
     void add_enlace(string enlace, int costo);
     void edit_costo(string enlace, int costo);

@@ -12,8 +12,13 @@ public:
     void cargar_red_archivo(string file);
     void add_enrutador(Enrutador enr);
     void delete_enrutador(string enr);
-    void enrutadores_archivo(const vector<string>enrutadores, const vector<string>linea);
+    void modificar_enrutacion (size_t posicion, const string& nuevo_enr, int costo);
+    void enrutadores_archivo(Red &malla, const vector<string>enrutadores, const vector<string>linea);
     vector <Enrutador> privado() const;
+    void recorrer_enrutadores();
+    vector <string> nombres_enrutadores() const;
+    const vector <Enrutador>& getRed() const;
+    Enrutador obtenerEnrutador(size_t posicion);
 };
 
 
