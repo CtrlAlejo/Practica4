@@ -14,6 +14,7 @@ public:
     Enrutador();
     void add_nombre(string nombre);
     void add_enlace(string enlace, int costo);
+    bool verif_enlace(string enlace);
     void edit_costo(string enlace, int costo);
     void delete_enlace(string enlace);
     void print_tabla_enlaces();

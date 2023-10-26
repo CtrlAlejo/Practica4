@@ -8,6 +8,7 @@ int main()
 {
     Red red;
     red.cargar_red_archivo("ejemplo.txt");
+    red.generar_red_aleatoria();
 /*
     Enrutador A;
     A.add_nombre("A");

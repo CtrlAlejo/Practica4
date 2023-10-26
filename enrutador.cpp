@@ -29,6 +29,14 @@ void Enrutador::add_enlace(string enlace, int costo)
     }
 }
 
+bool Enrutador::verif_enlace(string enlace)
+{
+    if(this->tabla_enlaces.find(enlace)==this->tabla_enlaces.end()){
+        return true;
+    }
+    return false;
+}
+
 void Enrutador::edit_costo(string enlace, int costo)
 {
     if(this->tabla_enlaces.find(enlace)!=this->tabla_enlaces.end()){
@@ -47,7 +55,6 @@ void Enrutador::print_tabla_enlaces()
 {
     for(map<string, int>::iterator it = tabla_enlaces.begin(); it != tabla_enlaces.end(); it++){
         cout <<endl << nombre << "\t" << it->first << "\t" << it->second << endl;
-
     }
 }
 
