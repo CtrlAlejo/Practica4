@@ -2,8 +2,7 @@
 #define RED_H
 #include "enrutador.h"
 #include <vector>
-#include <algorithm>
-#include <limits>
+#include <climits>
 
 int conversion_de_string_a_int(const char *cadena);
 string numero_a_string(int numero);
@@ -60,6 +59,10 @@ public:
     vector <vector<int>> lista_adyacencia(vector<string> &n_enrutadores);
 
     void caminos_optimos();
+
+    void agregar_remover_enrutador(Red red);
+
+    void print_enrutadores();
 };
 
 

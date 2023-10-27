@@ -348,3 +348,36 @@ int posicion_valor(vector <string> n_enrutadores, string nombre){
     }
     return cont;
 }
+
+void Red::agregar_remover_enrutador(Red red){
+    int opc = 0; Enrutador enr; string nombre;
+    cout << "Ingrese 1 si desea agregar un enrutador, ingrese 2 si desea remover un enrutador: ";
+    cin >> opc;
+
+    if(opc == 1){
+        cout << "Ingrese el nombre del enrutador: ";
+        cin >> nombre;
+        enr.add_nombre(nombre);
+        red.add_enrutador(enr);
+    }
+    else if(opc == 2){
+        cout << "Ingrese el nombre del enrutador que desea remover: ";
+        cin >> nombre;
+        red.delete_enrutador(nombre);
+    }
+}
+
+void Red::print_enrutadores(){
+    cout << "Lista de enrutadores: ";
+    for(size_t i = 0; i < enrutadores.size(); i++){
+        cout << enrutadores[i].getNombre() << " ";
+    }
+    cout <<endl;
+}
+
+
+
+
+
+
+
