@@ -30,7 +30,7 @@ public:
 
     void enrutadores_archivo(Red &malla, const vector<string>enrutadores, const vector<string>linea);
 
-    void generar_red_aleatoria();
+    void generar_red_aleatoria(Red &red1);
 
     void generacion_de_enrutadores(const unsigned n_enrutadores, Red &red, vector <string> &nombres);
 
@@ -60,7 +60,7 @@ public:
 
     void caminos_optimos();
 
-    void agregar_remover_enrutador(Red red);
+    void agregar_remover_enrutador(Red &red);
 
     void print_enrutadores();
 };
