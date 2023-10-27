@@ -94,36 +94,40 @@ void Red::modificar_enrutacion(size_t posicion, const string &nuevo_enr, int cos
     }
 }
 
-void Red::cargar_red_archivo(string file)
+void Red::lectura_de_archivo(Red &red, ifstream &archivo){
+    int cont = 0; string linea, valor; vector<string> valores; vector<string> aux; size_t pos = 0, espacio = 0;
+    while (getline(archivo, linea)) { // Lee línea por línea
+        // Busca los valores separados por espacios
+        while (pos < linea.length()) {
+            espacio = linea.find(' ', pos);
+            if (espacio != string::npos) {
+                valor = linea.substr(pos, espacio - pos);
+                pos = espacio + 1;
+            } else {
+                valor = linea.substr(pos);
+                pos = linea.length();
+            }
+            cont++;
+            aux.push_back(valor);
+            if (cont < 3){
+                valores.push_back(valor);
+            }
+            if (cont == 3){
+                cont = 0;
+            }
+        }
+        red.enrutadores_archivo(red, valores, aux);
+        aux.clear();
+        pos = 0;
+    }
+}
+
+void Red::cargar_red_archivo(Red &red, string file)
 {
-    Red red;
-    int cont = 0; ifstream archivo; string linea, valor; vector<string> valores; vector<string> aux; size_t pos = 0, espacio = 0;
+    ifstream archivo;
     archivo.open(file, ios::in | ios::binary);
     if (archivo.is_open()){
-        while (getline(archivo, linea)) { // Lee línea por línea
-            // Busca los valores separados por espacios
-            while (pos < linea.length()) {
-                espacio = linea.find(' ', pos);
-                if (espacio != string::npos) {
-                    valor = linea.substr(pos, espacio - pos);
-                    pos = espacio + 1;
-                } else {
-                    valor = linea.substr(pos);
-                    pos = linea.length();
-                }
-                cont++;
-                aux.push_back(valor);
-                if (cont < 3){
-                    valores.push_back(valor);
-                }
-                if (cont == 3){
-                    cont = 0;
-                }
-            }
-            red.enrutadores_archivo(red, valores, aux);
-            aux.clear();
-            pos = 0;
-        }
+        red.lectura_de_archivo(red, archivo);
         archivo.close();
     }
 }
@@ -208,7 +212,7 @@ void Red::definicion_de_enlaces(vector <string> nombres, double probabilidad){
 void Red::evaluar_tabla_enr(string nombre, Enrutador &nodo, const double probabilidad)
 {
     string nombre2; int costo_a;
-    if (nodo.verif_enlace(nombre) == true){
+    if (nodo.verif_enlace(nombre) == false){
         if (moneda(probabilidad) == true){
             nombre2 = nodo.getNombre();
             costo_a = costo_aleatorio();
@@ -239,4 +243,108 @@ int costo_aleatorio()
     mt19937 generador(rd());
     uniform_real_distribution<double> distribucion(1, 100);
     return int(distribucion(generador));
+}
+
+vector<int> dijkstra(const std::vector<std::vector<int>>& grafo, int origen, int destino, int& costoTotal) {
+    int numNodos = grafo.size();
+    std::vector<int> distancias(numNodos, INT_MAX);
+    std::vector<int> ruta(numNodos, -1);
+    std::vector<bool> visitados(numNodos, false);
+    distancias[origen] = 0;
+
+    for (int i = 0; i < numNodos - 1; i++) {
+        int u = -1;
+        for (int j = 0; j < numNodos; j++) {
+            if (!visitados[j] && (u == -1 || distancias[j] < distancias[u])) {
+                u = j;
+            }
+        }
+
+        visitados[u] = true;
+
+        for (int v = 0; v < numNodos; v++) {
+            if (!visitados[v] && grafo[u][v] && distancias[u] != INT_MAX &&
+                distancias[u] + grafo[u][v] < distancias[v]) {
+                distancias[v] = distancias[u] + grafo[u][v];
+                ruta[v] = u;
+            }
+        }
+    }
+
+    // Construir la ruta desde el destino al origen y calcular el costo
+    std::vector<int> camino;
+    int nodoActual = destino;
+    costoTotal = 0;
+    while (nodoActual != -1) {
+        camino.insert(camino.begin(), nodoActual);
+        int nodoAnterior = ruta[nodoActual];
+        if (nodoAnterior != -1) {
+            costoTotal += grafo[nodoActual][nodoAnterior];
+        }
+        nodoActual = nodoAnterior;
+    }
+
+    return camino;
+}
+
+void Red::imprimir_ruta_paquete(vector <int> camino, string nodo1, string nodo2)
+{
+    vector<string>n_enrutadores;
+    n_enrutadores = nombres_enrutadores();
+    if (!camino.empty()) {
+        cout << "Ruta desde " << nodo1 << " hasta " << nodo2 << ": ";
+        for (int nodo : camino) {
+            cout << n_enrutadores[nodo] << " -> ";
+        }
+        cout << "Fin" << endl;
+    }
+}
+
+void Red::imprimir_costo(int costoTotal)
+{
+    cout << "Costo total: " << costoTotal << endl;
+}
+
+vector <vector<int>> Red::lista_adyacencia(vector<string> &n_enrutadores){
+    string nombre; vector <vector<int>> grafo; vector <int> aux;
+    n_enrutadores = nombres_enrutadores();
+    for (size_t i = 0; i < enrutadores.size(); i++){
+        for (size_t j = 0; j < n_enrutadores.size(); j++){
+            nombre = n_enrutadores[j];
+            aux.push_back(enrutadores[i].obtener_costo(nombre));
+        }
+        grafo.push_back(aux);
+        aux.clear();
+    }
+    return grafo;
+}
+
+void Red::caminos_optimos(){
+    int origen, destino, costoTotal = 0, modo; string nodo1, nodo2; vector<string> n_enrutadores; vector <vector<int>> grafo; vector <int> camino;
+    grafo = lista_adyacencia(n_enrutadores);
+    cout << "Ingrese 1 si desea conocer el costo de envio del paquete o 2 si desea saber la ruta eficiente de su paquete: ";
+    cin >> modo;
+    cout << "Ingrese el enrutador origen: ";
+    cin >> nodo1;
+    origen = posicion_valor(n_enrutadores, nodo1);
+    cout << "Ingrese el enrutador de destino: ";
+    cin >> nodo2;
+    destino = posicion_valor(n_enrutadores, nodo2);
+    camino = dijkstra(grafo, origen, destino, costoTotal);
+    if (modo == 1){
+        imprimir_costo(costoTotal);
+    } else if (modo == 2) {
+        imprimir_ruta_paquete(camino, nodo1, nodo2);
+    }
+}
+
+int posicion_valor(vector <string> n_enrutadores, string nombre){
+    int cont = 0;
+    for (size_t i = 0; i < n_enrutadores.size(); i++){
+        cont = i;
+        if (n_enrutadores[i] == nombre){
+            return cont;
+        }
+    }
+    return cont;
 }

@@ -32,9 +32,9 @@ void Enrutador::add_enlace(string enlace, int costo)
 bool Enrutador::verif_enlace(string enlace)
 {
     if(this->tabla_enlaces.find(enlace)==this->tabla_enlaces.end()){
-        return true;
+        return false;
     }
-    return false;
+    return true;
 }
 
 void Enrutador::edit_costo(string enlace, int costo)
@@ -58,20 +58,11 @@ void Enrutador::print_tabla_enlaces()
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+int Enrutador::obtener_costo(string clave)
+{
+    int costo = 0;
+    if(this->tabla_enlaces.find(clave)!=this->tabla_enlaces.end()){
+        costo = tabla_enlaces[clave];
+    }
+    return costo;
+}

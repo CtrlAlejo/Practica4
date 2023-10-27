@@ -1,14 +1,28 @@
 #include <iostream>
-#include "enrutador.h"
 #include "red.h"
 
 using namespace std;
 
 int main()
 {
-    Red red;
-    red.cargar_red_archivo("ejemplo.txt");
-    red.generar_red_aleatoria();
+    Red red; short seleccion;
+    while (true){
+        cout << "Seleccione: " << endl <<  "1. Cargar la red desde un archivo" << endl;
+        cout << "2. Agregar o remover enrutador" << endl;
+        cout << "3. Saber cuanto cuesta enviar un paquete desde un enrutador origen a uno destino." << endl;
+        cout << "4. Cual es el camino que debe seguir un paquete para ser enviado de forma eficiente desde un enrutador origen a uno destino." << endl;
+        cout << "5. Generar red de forma aleatoria." << endl;
+        cin >> seleccion;
+        if (seleccion == 1){
+            red.cargar_red_archivo(red, "ejemplo.txt");
+        }
+        if (seleccion == 2){
+            red.caminos_optimos();
+        }
+        if (seleccion == 3){
+            red.generar_red_aleatoria();
+        }
+    }
 /*
     Enrutador A;
     A.add_nombre("A");
@@ -32,7 +46,5 @@ int main()
     malla.add_enrutador(B);
     malla.delete_enrutador("A");
 */
-
-
     return 0;
 }

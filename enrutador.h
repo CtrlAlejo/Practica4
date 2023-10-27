@@ -21,6 +21,7 @@ public:
     string getNombre() const;
     map<string, int> getTabla_enlaces() const;
     void setTabla_enlaces(const map<string, int> &newTabla_enlaces);
+    int obtener_costo(string clave);
 };
 
 #endif // ENRUTADOR_H

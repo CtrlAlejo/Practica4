@@ -2,11 +2,14 @@
 #define RED_H
 #include "enrutador.h"
 #include <vector>
+#include <algorithm>
+#include <limits>
 
 int conversion_de_string_a_int(const char *cadena);
 string numero_a_string(int numero);
 bool moneda(double probabilidad);
 int costo_aleatorio();
+int posicion_valor(vector <string> n_enrutadores, string nombre);
 
 class Red {
 private:
@@ -16,7 +19,7 @@ public:
 
     void crear_enrutador(Red &malla, const string nombre);
 
-    void cargar_red_archivo(string file);
+    void cargar_red_archivo(Red &red, string file);
 
     void modificar_red(Red &malla, vector<string>nombres, const string nombre, const vector<string>linea, const int pos, const int numero);
 
@@ -47,6 +50,16 @@ public:
     void definicion_de_enlaces(vector <string> nombres, double probabilidad);
 
     void evaluar_tabla_enr(string nombre, Enrutador &nodo, const double probabilidad);
+
+    void lectura_de_archivo(Red &red, ifstream &archivo);
+
+    void imprimir_ruta_paquete(vector <int> camino, string nodo1, string nodo2);
+
+    void imprimir_costo(int costoTotal);
+
+    vector <vector<int>> lista_adyacencia(vector<string> &n_enrutadores);
+
+    void caminos_optimos();
 };
 
 
